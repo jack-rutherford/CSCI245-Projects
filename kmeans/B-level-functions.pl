@@ -1,7 +1,8 @@
 #  This subroutine should print out the usage information shown in the assignment
 #  description for the --help option.
 sub printUsage () {
-
+    print ("Usage:  perl kmeans-B.pl  --filename name [--datapoints=0]  [--centers=0]  [--groups=1]  [--help]\n");
+    print("At least one of --datapoints, --centers, --groups must be true\n");
 }
 
 #  This subroutine takes a reference to an array of observations, where an observation
@@ -57,6 +58,10 @@ sub computeAverage {
 #  to print out each observation, and the computeAverage subroutine to compute the 
 #  average of each group of observations.
 sub printGroups {
+    my @labels = readLabels($filename);
+    my ($hashRef) = $_[0];
+    my %hash = %$hashRef;
+    print "There were ", scalar 
     print "Print groups called\n";
 }
 

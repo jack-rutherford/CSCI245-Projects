@@ -7,19 +7,41 @@ require "./B-level-functions.pl";
 #  Variables to hold the results of the command line options
 #  TODO:  Initialize these variables to the appropriate defaults
 my $filename   = "";
-my $datapoints;
-my $centers;
-my $groups;
-my $help;
+my $datapoints = -1; # 0
+my $centers = -1; # 0
+my $groups = -1; # 1
+my $help = -1;
+my $flag = 0;
 
 #  TODO
 #  Make a call to GetOptions to parse the command line arguments
 #  based on the requirements described in the assignment specification
 #  Store the results into the variables defined above
-
+GetOptions(
+  "filename=s", \$filename,
+  "datapoints:i", \$datapoints,
+  "centers:i", \$centers,
+  "groups:i", \$groups,
+  "datapoints!", \$datapoints,
+  "centers!", \$centers,
+  "groups!", \$groups,
+  "help!", \$help
+);
 
 # TODO  Check if the --help option was specified.  If it was, call the
 # subroutine printUsage and then exit with a status of 0
+# check help? if something
+if($help == 0){
+  print "\"--nohelp\" not a valid input\n";
+  printUsage();
+  exit 0;
+}
+if($help == 1){
+  print "help called";
+  printUsage();
+  $help = "";
+  exit 0;
+}
 
 
 #  TODO
@@ -27,12 +49,37 @@ my $help;
 #  --filename command line argument, and that at least one of the
 #  --datapoints, --centers, and --groups arguments have been specified
 #  If not, the program should call printUsage and then exit with a status of 1
+if($datapoints < 0){
+  $datapoints = 0;
+  $flag = 1;
+}
+elsif($datapoints <= 0){
+  $datapoints = 0;
+}
+if($centers < 0){
+  $centers = 0;
+  $flag = 1;
+}
+elsif($centers <= 0){
+  $centers = 0;
+}
+if($groups < 0){
+  $groups = 1;
+  $flag = 1;
+}
+elsif($groups <= 0){
+  $groups = 1;
+}
 
+if($filename eq "" || (($datapoints == 0 && $centers == 0 && $groups == 1)) && $flag == 0){
+  printUsage();
+  exit 1;
+}
 
 my $datafile;
 
 unless ( open $datafile, $filename ) {
-    print "Cannot open $filename";
+    print "Cannot open $filename\n";
     exit 2;
 }
 
@@ -45,8 +92,7 @@ chomp( my @lines = <$datafile> );
 my @observations       = @lines[ 0 .. $#lines - 1 ];
 my $datapointsArrayRef = readObservations( \@observations );
 
-#  TODO-Copy the line from Kmeans-C.pl that sets the value of the variable @datapoints from $datapointsArrayRef
-#  Then delete this comment
+@datapoints = @$datapointsArrayRef;
 
 my $valid = 1;
 my $error = "";
@@ -67,26 +113,28 @@ print "There were ", scalar @datapoints,
 
 #  TODO  Make sure the data points are only displayed when the --datapoints argument
 #  has been specified
-
-for my $datapointRef (@datapoints) {
-    printObservation( $i, $datapointRef );
-    $i++;    
+if($datapoints > 0){
+  for my $datapointRef (@datapoints) {
+      printObservation( $i, $datapointRef );
+      $i++;    
+  }
 }
-
 my @clusterCenters = ();
 
-#  TODO-Copy the line from your C-level solution that assigns the array referenced by $clusterCentersArrayRef to the array variable @clusterCenters
-#  Then delete this comment
+@clusterCenters = @$clusterCentersArrayRef;
 
 #  TODO Make sure the text "Cluster centers" and the datapoints chosen as the
 #  cluster centers are only displayed when the --centers argument has been specified
-print "\nCluster centers\n";
-for my $clusterCenterIndex (@clusterCenters) {
-    printObservation( $clusterCenterIndex,
-        $datapoints[$clusterCenterIndex] );
+if($centers > 0){
+  print "\nCluster centers\n";
+  for my $clusterCenterIndex (@clusterCenters) {
+      printObservation( $clusterCenterIndex,
+          $datapoints[$clusterCenterIndex] );
+  }
 }
 
 #  TODO  Make sure the groups are printed only when the --groups argument is true
-my $groupsRef = createGroupsByLabel( \@datapoints );
-printGroups($groupsRef);
-
+if($groups >= 1){
+  my $groupsRef = createGroupsByLabel( \@datapoints );
+  printGroups($groupsRef);
+}
