@@ -13,7 +13,7 @@ my %people = (
 );
 
 my @main_options = ("Add a person", "Delete a person", "Rename a person", "Select a person", "Print", "Exit");
-my @person_selected_options = ("Add a property", "Delete a property", "Change a property", "Print", "Go back", "Exit");
+my @person_selected_options = ("Add a property", "Delete a property", "Change a property", "Remove Property", "Print", "Go back", "Exit");
 
 sub printMenu {
 	my ($current_person) = @_;
@@ -58,12 +58,15 @@ sub getAndProcessOption {
 				changeProperty($current_person);
 			}
 			elsif ($option eq "4") {
-				printPerson($current_person);
+                removePerson($current_person);
 			}
 			elsif ($option eq "5") {
-				$current_person = undef;
+                printPerson($current_person);
 			}
-			elsif ($option eq "6") {
+            elsif($option eq "6"){
+                $current_person = undef;
+            }
+			elsif ($option eq "7") {
 				endProgram();
 			}
 			else {
@@ -157,7 +160,7 @@ sub changeProperty {
 
     my @values = @{$people{$person}->{$property}};
     my $str = join(", ", @values);
-    
+
 	print "Set property $property to $str for $person\n";
 	return $person;
 }
@@ -262,6 +265,44 @@ sub printPeople {
 	foreach my $person (sort keys %people) {
 		printPerson ($person);
 	}
+}
+
+sub removePerson{
+    my ($person) = @_;
+    my $property = "";
+    my $str = "";
+    my $flag = 0;
+
+    printPropertiesForPerson($person);
+
+    until (${$people{$person}}{$property}) {
+        print "Enter the property you want to change: ";
+        chomp ($property = <STDIN>);
+        print "The property $property does not exist for $person\n"
+            unless (${$people{$person}}{$property});
+    }
+
+    my @favArr = ();
+    my $count = 0;
+    until($flag == 1){
+        print "Please select the element that you want to delete\n";
+        chomp ($str = <STDIN>);
+        @favArr = @{${people{$person}{$property}}};
+        foreach my $val (@favArr){
+            if($val eq $property){
+                $flag = 1;
+
+            }
+            $count++;
+        }
+        print "The property $property doesn't exist for the person $person\n"
+            unless $flag == 1;
+    }
+
+    splice(@favArr, $count, 1);
+    $people{$person}->{$property} = \@favArr;
+    print "Removed $str from the property $property\n";
+    print "New value is ", join (", ", @favArr), "\n";
 }
 
 sub endProgram {
