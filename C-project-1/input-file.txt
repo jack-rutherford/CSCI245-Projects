@@ -1,0 +1,31 @@
+#include <stdio.h>
+/* Multiline comment
+   this spans multiple lines
+   and finishing */
+int main(int argc, char *argv[]){
+    int c, blank;
+
+    c = getchar();
+    blank = 0; // This is a comment
+    while(c != EOF){
+        if(c != ' ' && blank == 0){
+            putchar(c);
+        }
+        else if(blank == 1){
+            if(c != ' '){
+                printf(" ");
+                putchar(c);
+                blank = 0;
+            }
+            printf("//this is a comment that shouldn't be removed");
+        }
+        else{
+            blank = 1;
+        }
+        c = getchar();
+    }
+    if(blank == 0){
+        printf(" ");
+    }
+
+}
