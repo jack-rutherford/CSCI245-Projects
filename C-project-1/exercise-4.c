@@ -1,44 +1,93 @@
 #include <stdio.h>
 
-#define IN 1
-#define OUT 0
+#define NORMAL 1
+#define READ_SLASH 2
+#define IN_SL_COMMENT 3
+#define IN_ML_COMMENT 4
+#define MAYBE_END_ML 5
+#define IN_DOUBLE_QUOTE 6
+#define IN_SINGLE_QUOTE 7
+
 
 int main(int argc, char *argv[]){
-    int c, state, ml, sl, ml2, dq = 0;
+    int state = NORMAL;
+    int c;
 
-    state = OUT;
     c = getchar();
     while(c != EOF){
-        if(state == OUT){
+        switch (state)
+        {
+        case NORMAL:
             if(c == '/'){
-                state = IN;
+                state = READ_SLASH;
+            }
+            else if(c == '"'){
+                putchar(c);
+                state = IN_DOUBLE_QUOTE;
+            }
+            else if(c == '\''){
+                putchar(c);
+                state = IN_SINGLE_QUOTE;
             }
             else{
                 putchar(c);
             }
-        }
-        else if(state == IN){
-            if(c == '/' && sl == 0){
-                sl = 1;
+            break;
+        
+        case READ_SLASH:
+            if(c == '/'){
+                state = IN_SL_COMMENT;
             }
-            else if(c == '*' && ml == 0){
-                ml = 1;
+            else if(c == '*'){
+                state = IN_ML_COMMENT;
             }
-            else if(sl == 1 && c == '\n'){
-                state = OUT;
-                sl = 0;
-                printf("\n");
+            else{
+                state = NORMAL;
+                putchar(c);
             }
-            else if(ml == 1 && c == '*'){
-                ml2 = 1;
-            }
-            else if(ml == 1 && ml2 == 1 && c == '/'){
-                state = OUT;
-                ml = 0;
-                ml2 = 0;
-            }
-        }
+            break;
 
+        case IN_SL_COMMENT:
+            if(c == '\n'){
+                state = NORMAL;
+                putchar(c);
+            }
+            break;
+
+        case IN_ML_COMMENT:
+            if(c == '*'){
+                state = MAYBE_END_ML;
+            }
+            break;
+
+        case MAYBE_END_ML:
+            if(c == '/'){
+                state = NORMAL;
+            }
+            break;
+
+        case IN_DOUBLE_QUOTE:
+            if(c == '"'){
+                state = NORMAL;
+                putchar(c);
+            }
+            else{
+                putchar(c);
+            }
+            break;
+
+        case IN_SINGLE_QUOTE:
+            if(c == '\''){
+                state = NORMAL;
+                putchar(c);
+            }
+            else{
+                putchar(c);
+            }
+            break;
+        }
+        
         c = getchar();
     }
+
 }
