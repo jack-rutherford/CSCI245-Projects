@@ -69,25 +69,19 @@ int main(int argc, char *argv[]){
         case IN_DOUBLE_QUOTE:
             if(c == '"'){
                 state = NORMAL;
-                putchar(c);
             }
-            else{
                 putchar(c);
-            }
             break;
 
         case IN_SINGLE_QUOTE:
             if(c == '\''){
                 state = NORMAL;
-                putchar(c);
             }
-            else{
-                putchar(c);
-            }
+            putchar(c);
             break;
         }
         
         c = getchar();
     }
-
+    printf("\n");
 }
