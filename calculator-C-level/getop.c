@@ -12,16 +12,17 @@ int getop(char s[])
    s[1] = '\0';
    if(!isdigit(c) && c !='.'){
        if(c == 'e'){
-           s[++i] = M_E;
-           c = getch();
+        //    s[++i] = M_E;
+           return CONSTANT;
        }
        else if(c == 'p'){
-           if(c = getch() == 'i'){
-              s[++i] = M_PI;
-              c = getch();
+           if(s[++i] = c = getch() == 'i'){
+            //   s[++i] = M_PI;
+              return CONSTANT;
            }
        }
-       else if(c == '*'){
+
+       if(c == '*'){
            d = getch();
            if(d == '*'){
               return '^';

@@ -60,6 +60,14 @@ int main(int argc, char* argv[])
             }
             flag = 0;
             break;
+        case CONSTANT:
+            if(s[0] == 'e'){
+                push(M_E);
+            }
+            else{
+                push(M_PI);
+            }
+            break;
         default:
             printf("error: unknown command %s\n", s);
             break;
