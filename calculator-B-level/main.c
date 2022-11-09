@@ -13,6 +13,20 @@ int main(int argc, char* argv[])
     char s[MAXOP];
     int flag = 0;
 
+
+    for(int i = 1; i < argc; i++){
+        int temp[MAXOP];
+        int ind = 0;
+        for(int j = 0; argv[i][j] != '\0'; j++){
+            temp[j] = argv[i][j];
+            ind++;
+        }
+        ungetch('\n');
+        for(int j = ind - 1; j >= 0; j--){
+            ungetch(temp[j]);
+        }
+    }
+
     while ((type = getop(s)) != EOF)
     {
         // flag = 0;
