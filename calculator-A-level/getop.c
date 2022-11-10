@@ -45,12 +45,12 @@ int getop(char s[])
                     push(memory[index-'0']);
                     return PRINTMEM;
                 }
-                else{
-                    printf("Invalid memory input, please enter a number 0-9");
-                    while(c = getch() != ' ' || c == '\n')
-                        ;
-                    return c;
-                }
+                // else{
+                //     printf("Invalid memory input, please enter a number 0-9");
+                //     while(c = getch() != ' ' || c == '\n')
+                //         ;
+                //     return c;
+                // }
             }
         }
 
