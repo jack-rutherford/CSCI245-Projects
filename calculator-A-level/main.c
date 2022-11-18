@@ -5,6 +5,8 @@
 #include "calc.h"
 #define MAXOP 100
 
+double memory[10] = {0};
+
 int main(int argc, char* argv[])
 {
     int type;
@@ -12,6 +14,8 @@ int main(int argc, char* argv[])
     double op2;
     char s[MAXOP];
     int flag = 0;
+    int store[MAXOP] = {-1};
+    int storeInd = 0;
 
 
     for(int i = 1; i < argc; i++){
@@ -72,6 +76,11 @@ int main(int argc, char* argv[])
                 // printf("flag: %d", flag);
                 printf("\t%.8g\n", pop());
             }
+            int count = 0;
+            while(store[count] != -1){
+                printf("M%d\n\t%f\n",store[count], memory[store[count]]);
+                count++;
+            }
             flag = 0;
             break;
         case CONSTANT:
@@ -96,6 +105,17 @@ int main(int argc, char* argv[])
                 printf("Unrecognized function %s entered\n", s);
                 flag = 1;
             }
+            break;
+        case MEM:
+            store[storeInd++] = s[1];
+            int result = pop();
+            memory[s[1]] = result;
+            push(result);
+            // Pop answer onto mem stack
+            // Push answer back onto regular stack
+            break;
+        case PRINTMEM:
+            push(pop());
             break;
         default:
             printf("error: unknown command %s\n", s);
