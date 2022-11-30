@@ -27,7 +27,7 @@ int contains (struct LinkedList* list, char* sValue){
 }
 
 struct LinkedList* copy (struct LinkedList* src) {
-  struct Node* tmp = createNode(src->head->data);
+  struct Node* tmp = src->head;
   struct LinkedList* lst = create(tmp->data);
   struct Node* tail = src->head->next;
   while(tail != NULL){
