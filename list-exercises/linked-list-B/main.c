@@ -27,4 +27,20 @@ int main (int argc, char** argv) {
   printf("\nOld list: ");
   print(list);
 
+  //B level
+  printf("_______________________________\n");
+  insertBefore(lstCopy, "world", "good ");
+  printf("Inserted the word good before world: ");
+  print(lstCopy);
+
+  delete(list, " ");
+  printf("Deleted the space from \"Hello world\": ");
+  print(list);
+
+  delete(list, "Hello");
+  printf("Deleted \"Hello\" from \"Helloworld\": ");
+  print(list);
+
+  
+
 }
