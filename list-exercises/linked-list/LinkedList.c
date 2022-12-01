@@ -38,6 +38,48 @@ struct LinkedList* copy (struct LinkedList* src) {
   return lst;
 }
 
+/**
+ Inserts a new node with value "value" into the list
+referenced by "list" so that the new node comes before 
+ the node with value "sValue"
+ Returns 0 if no node with value "sValue" can be found 
+ in the list. Returns -1 if no memory can be allocated
+ for a new node, and 1 if the new node is created
+**/ 
+int insertBefore (struct LinkedList* list, char* sValue, char* value){
+  int result = contains(list, sValue);
+  if(result == 1){
+    struct Node* nNode = createNode(value);
+    if(nNode == NULL){
+      // printf("No memory can be allocated for new node");
+      return -1;
+    }
+
+    if(strcmp(list->head->data, sValue) == 0){
+      nNode->next = list->head;
+      list->head = nNode;
+      return 1;
+    }
+
+    struct Node* tmp = list->head->next;
+    struct Node* pNode = list->head;
+    while (tmp != NULL) {
+      if(strcmp(tmp->data, sValue) == 0){
+        nNode->next = tmp;
+        pNode->next = nNode;
+        return 1; //contains the node
+      }
+      pNode = tmp;
+      tmp = tmp->next;
+    }
+    return 1;
+  }
+  else{
+    // printf("No node with value %s could be found\n", value);
+    return 0;
+  }
+}
+
 struct Node* createNode (char* data) {
   struct Node* node = (struct Node*) malloc(sizeof(struct Node));
   //  Make sure memory was successfully allocated for the new node
