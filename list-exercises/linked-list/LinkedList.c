@@ -80,6 +80,41 @@ int insertBefore (struct LinkedList* list, char* sValue, char* value){
   }
 }
 
+/**
+ Deletes the node in the list with value "value"
+ Returns 0 if such a node cannot be found; otherwise
+ returns 1
+**/
+int delete(struct LinkedList* list, char* value){
+  int result = contains(list, value);
+  if(result == 1){
+    //check head first
+    if(strcmp(list->head->data, value) == 0){
+      list->head = list->head->next;
+      list->head->next = NULL;
+      free(list->head);
+      return 1; //head is the node you're looking for, deleted
+    }
+
+    //start from second node, previous node is head
+    struct Node* tmp = list->head->next;
+    struct Node* pNode = list->head;
+    while (tmp != NULL) {
+      if(strcmp(tmp->data, value) == 0){
+        pNode->next = tmp->next;
+        tmp->next = NULL;
+        free(tmp);
+        return 1; //contains the node, deleted
+      }
+      tmp = tmp->next;
+    }
+  }
+  else{
+    return 0; //node not found
+  }
+}
+
+
 struct Node* createNode (char* data) {
   struct Node* node = (struct Node*) malloc(sizeof(struct Node));
   //  Make sure memory was successfully allocated for the new node

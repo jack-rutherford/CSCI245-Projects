@@ -25,6 +25,13 @@ referenced by "list" so that the new node comes before
 **/ 
 int insertBefore (struct LinkedList* list, char* sValue, char* value);
 
+/**
+ Deletes the node in the list with value "value"
+ Returns 0 if such a node cannot be found; otherwise
+ returns 1
+**/
+int delete(struct LinkedList* list, char* value);
+
 void print(struct LinkedList* list);
 struct LinkedList* create(char* data);
 struct LinkedList* insertAfter(struct LinkedList* list, char* valueToFind, char* newValue);
