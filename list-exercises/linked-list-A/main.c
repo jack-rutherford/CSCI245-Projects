@@ -1,0 +1,62 @@
+#include "LinkedList.h"
+#include "toUpperCase.h"
+#include "printNode.h"
+#include <stdio.h>
+
+int main (int argc, char** argv) {
+  struct LinkedList* list = create("Hello");
+  insertAfter(list, "Hello", " ");
+  insertAfter(list, " ", "world");
+  insertAfter(list, "world", "\n");
+
+  //task 2
+  print(list);
+
+  int w = contains(list, "Hello");
+  int w2 = contains(list, " ");
+  int w3 = contains(list, "world");
+  printf("Result of contains:\nHello\t-> %d\n\" \"\t-> %d\nworld\t-> %d\n", w, w2, w3);
+
+  int w4 = contains(list, "Goodbye");
+  printf("\nResult of contains:\nGoodbye\t-> %d\n\n", w4);
+
+  struct LinkedList* lstCopy = copy(list);
+  insertAfter(lstCopy, " ", "new");
+  insertAfter(lstCopy, "new", " ");
+  printf("New list: ");
+  print(lstCopy);
+
+  printf("\nOld list: ");
+  print(list);
+
+  //B level
+  printf("_______________________________\n");
+  insertBefore(lstCopy, "world", "good ");
+  printf("Inserted the word good before world: ");
+  print(lstCopy);
+
+  delete(list, " ");
+  printf("Deleted the space from \"Hello world\": ");
+  print(list);
+
+  delete(list, "Hello");
+  printf("Deleted \"Hello\" from \"Helloworld\": ");
+  print(list);
+
+
+  struct LinkedList* list1 = create("Hello");
+  insertAfter(list1, "Hello", " ");
+  insertAfter(list1, " ", "world");
+  insertAfter(list1, "world", " ");
+  insertAfter(list1, " ", "brand");
+  insertAfter(list1, "brand", "\n");
+
+  printf("\n\nPrinting list with visit\n");
+  visit(list1, *(printNode));
+
+  printf("\n\nTurning list to upper case.\n");
+  visit(list1, *(toUpperCase));
+  print(list1);
+  printf("\n");
+
+}
